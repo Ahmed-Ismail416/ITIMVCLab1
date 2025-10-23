@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITIMVC.Controllers
 {
-    public class StudentController : Controller
+    public class DepartmentController : Controller
     {
         private readonly CompanyContext _context;
 
-        public StudentController(CompanyContext context)
+        public DepartmentController(CompanyContext context)
         {
             _context = context;
         }
@@ -16,18 +16,28 @@ namespace ITIMVC.Controllers
         // GetAll
         public IActionResult GetAll()
         {
-            var data = _context.Students.ToList();
+            var data = _context.Departments.ToList();
             return View(data);
         }
 
         // GetById
         public IActionResult GetById(int id)
         {
-            var data = _context.Students.Find(id);
-            if (data == null)
+            var dept = _context.Departments.Find(id);
+            if (dept == null)
                 return NotFound();
 
-            return View(data);
+            return View(dept);
+        }
+
+        // GetByName
+        public IActionResult GetByName(string name)
+        {
+            var depts = _context.Departments
+                .Where(d => d.Name.Contains(name))
+                .ToList();
+
+            return View("GetAll", depts);
         }
 
         // Add (GET)
@@ -39,16 +49,16 @@ namespace ITIMVC.Controllers
 
         // Add (POST)
         [HttpPost]
-        public IActionResult Add(Student student)
+        public IActionResult Add(Department department)
         {
             if (ModelState.IsValid)
             {
-                _context.Students.Add(student);
+                _context.Departments.Add(department);
                 _context.SaveChanges();
                 return RedirectToAction("GetAll");
             }
 
-            return View(student);
+            return View(department);
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ITIMVC.Models.Department>
+
+<h2>All Departments</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Dept ID</th>
+            <th>Name</th>
+            <th>Manager</th>
+            <th>Location</th>
+            <th>Branches</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var dept in Model)
+        {
+            <tr>
+                <td>@dept.DeptId</td>
+                <td>@dept.Name</td>
+                <td>@dept.Manager</td>
+                <td>@dept.Location</td>
+                <td>@dept.Branches</td>
+                <td>
+                    <a asp-action="GetById" asp-route-id="@dept.DeptId">View</a> |
+                    <a asp-action="GetByName" asp-route-name="@dept.Name">By Name</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    

@@ -1,0 +1,27 @@
+﻿@model ITIMVC.Models.Department
+
+<h2>Add New Department</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group mb-2">
+        <label>Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group mb-2">
+        <label>Manager</label>
+        <input asp-for="Manager" class="form-control" />
+    </div>
+
+    <div class="form-group mb-2">
+        <label>Location</label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+
+    <div class="form-group mb-2">
+        <label>Branches</label>
+        <input asp-for="Branches" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Add Department</button>
+</form>
