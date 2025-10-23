@@ -1,8 +1,8 @@
 using System.Diagnostics;
-using ITIMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication1.Models;
 
-namespace ITIMVC.Controllers
+namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {

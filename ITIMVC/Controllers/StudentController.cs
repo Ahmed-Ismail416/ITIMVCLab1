@@ -1,54 +1,26 @@
-﻿using ITIMVC.Context;
-using ITIMVC.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using WebApplication1.Models;
 
-namespace ITIMVC.Controllers
+namespace WebApplication1.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly CompanyContext _context;
+        
 
-        public StudentController(CompanyContext context)
-        {
-            _context = context;
-        }
-
-        // GetAll
-        public IActionResult GetAll()
-        {
-            var data = _context.Students.ToList();
-            return View(data);
-        }
-
-        // GetById
-        public IActionResult GetById(int id)
-        {
-            var data = _context.Students.Find(id);
-            if (data == null)
-                return NotFound();
-
-            return View(data);
-        }
-
-        // Add (GET)
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        // Add (POST)
-        [HttpPost]
-        public IActionResult Add(Student student)
-        {
-            if (ModelState.IsValid)
+            DBContext DB = new DBContext();
+            public ViewResult GetAll()
             {
-                _context.Students.Add(student);
-                _context.SaveChanges();
-                return RedirectToAction("GetAll");
-            }
+                var students = DB.Students.ToList();
+                return View("Student", students);
 
-            return View(student);
+            }
+        public ViewResult getById(int id)
+        {
+            var students = DB.Students.Find(id);
+            return View("StudentId", students);
+
         }
+
     }
 }

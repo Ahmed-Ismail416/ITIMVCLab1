@@ -1,6 +1,7 @@
 ﻿using ITIMVC.Context;
 using ITIMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace ITIMVC.Controllers
 {
@@ -13,52 +14,86 @@ namespace ITIMVC.Controllers
             _context = context;
         }
 
-        // GetAll
+        // GET: Department/GetAll
         public IActionResult GetAll()
         {
             var data = _context.Departments.ToList();
             return View(data);
         }
 
-        // GetById
-        public IActionResult GetById(int id)
+        // GET: Department/Details/5
+        public IActionResult Details(int id)
         {
-            var dept = _context.Departments.Find(id);
-            if (dept == null)
-                return NotFound();
-
+            var dept = _context.Departments.FirstOrDefault(d => d.DeptId == id);
+            if (dept == null) return NotFound();
             return View(dept);
         }
 
-        // GetByName
-        public IActionResult GetByName(string name)
-        {
-            var depts = _context.Departments
-                .Where(d => d.Name.Contains(name))
-                .ToList();
-
-            return View("GetAll", depts);
-        }
-
-        // Add (GET)
-        [HttpGet]
+        // GET: Department/Add
         public IActionResult Add()
         {
             return View();
         }
 
-        // Add (POST)
+        // POST: Department/Add
         [HttpPost]
-        public IActionResult Add(Department department)
+        [ValidateAntiForgeryToken]
+        public IActionResult Add(Department dept)
         {
             if (ModelState.IsValid)
             {
-                _context.Departments.Add(department);
+                _context.Departments.Add(dept);
                 _context.SaveChanges();
-                return RedirectToAction("GetAll");
+                return RedirectToAction(nameof(GetAll));
+            }
+            return View(dept);
+        }
+
+        // GET: Department/Edit/5
+        public IActionResult Edit(int id)
+        {
+            var dept = _context.Departments.Find(id);
+            if (dept == null) return NotFound();
+            return View(dept);
+        }
+
+        // POST: Department/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Department dept)
+        {
+            if (id != dept.DeptId) return BadRequest();
+
+            if (ModelState.IsValid)
+            {
+                _context.Departments.Update(dept);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(GetAll));
             }
 
-            return View(department);
+            return View(dept);
+        }
+
+        // GET: Department/Delete/5
+        public IActionResult Delete(int id)
+        {
+            var dept = _context.Departments.Find(id);
+            if (dept == null) return NotFound();
+            return View(dept);
+        }
+
+        // POST: Department/DeleteConfirmed/5
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var dept = _context.Departments.Find(id);
+            if (dept != null)
+            {
+                _context.Departments.Remove(dept);
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(GetAll));
         }
     }
 }
