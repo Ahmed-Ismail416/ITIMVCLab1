@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Students Index";
+}
+
+<h1>Students Index</h1>
+
+@if (Model.Student.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>SSN</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.ssn</td>
+                    <td>@student.name</td>
+                    <td>@student.age</td>
+                    <td>@student.address</td>
+                    <td>@student.email</td>
+                    <td>
+                        <a asp-controller="Student" asp-action="Edit" asp-route-id="@student.ssn">Edit</a>
+                        <a asp-controller="Student" asp-action="Delete" asp-route-id="@student.ssn">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No students found.</p>
+}
